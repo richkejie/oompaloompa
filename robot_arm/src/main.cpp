@@ -1,25 +1,35 @@
 #include <Arduino.h>
 
-// put function declarations here:
-int myFunction(int, int);
 
-
+#define ledPin 13
+int state = 0;
 
 
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
 
-  pinMode(13, OUTPUT);
+  pinMode(ledPin, OUTPUT);
+  digitalWrite(ledPin, LOW);
+  Serial.begin(38400);
+
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  digitalWrite(13, HIGH);
+
+  if (Serial.available() > 0) {
+    state = Serial.read();
+  }
+
+  if (state == '0') {
+    digitalWrite(ledPin, LOW);
+    Serial.println("LED: OFF");
+    state = 0;
+  }
+  else if (state == '1') {
+    digitalWrite(ledPin, HIGH);
+    Serial.println("LED: ON");
+    state = 0;
+  }
+
 }
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
-}
